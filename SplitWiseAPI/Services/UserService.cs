@@ -7,32 +7,33 @@ namespace SplitWiseAPI.Services
     public class UserService:IUserService
     {
         private readonly SqlConnection _sqlConnection;
-        private readonly SqlCommand _command;
         private readonly IConfiguration _configuration;
-        public UserService(SqlCommand command, IConfiguration configuration)
+        public UserService( IConfiguration configuration)
         {
             
-            _command = command;
+           
             _configuration = configuration;
-            _sqlConnection = new SqlConnection(configuration.GetConnectionString(""));
+            _sqlConnection = new SqlConnection(_configuration.GetConnectionString("SplitWiseDB"));
 
         }
-        public void RegisterUser(User user)
+        public int RegisterUser(User user)
         {
-            string sp = "";
+            string sp = "sp_InsertSplitwiseUser";
             SqlCommand sqlCommand = new SqlCommand(sp, _sqlConnection);
             sqlCommand.CommandType = CommandType.StoredProcedure;
             sqlCommand.Parameters.AddWithValue("@Name", user.Name);
             sqlCommand.Parameters.AddWithValue("@Email", user.Email);
             sqlCommand.Parameters.AddWithValue("@PhoneNumber", user.PhoneNumber);
             _sqlConnection.Open();
-            sqlCommand.ExecuteNonQuery();
-            _sqlConnection.Close();     
+            int rowsEffected=sqlCommand.ExecuteNonQuery();
+            _sqlConnection.Close();
+            return rowsEffected;
+              
         }
         public List<User> GetUsers()
         {
             List<User> users = new List<User>();
-            string sp = "";
+            string sp = "SP_GetAllSplitWiseUsers";
             SqlCommand sqlCommand = new SqlCommand( sp, _sqlConnection);
             sqlCommand.CommandType= CommandType.StoredProcedure;
             _sqlConnection.Open();
@@ -44,7 +45,7 @@ namespace SplitWiseAPI.Services
                     User user = new User();
                     user.UserId = Convert.ToInt32(reader["UserId"]);
                     user.Name = Convert.ToString(reader["Name"]);
-                    user.PhoneNumber = Convert.ToInt32(reader["PhoneNumber"]);
+                    user.PhoneNumber = Convert.ToString(reader["PhoneNumber"]);
                     user.Email = Convert.ToString(reader["Email"]);
                     users.Add(user);
 

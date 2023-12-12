@@ -1,5 +1,7 @@
-var builder = WebApplication.CreateBuilder(args);
+using SplitWise.Facade;
 
+var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddScoped<IApplicatioFacade,ApplicationFacade>();
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 

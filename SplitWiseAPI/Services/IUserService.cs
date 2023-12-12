@@ -4,7 +4,7 @@ namespace SplitWiseAPI.Services
 {
     public interface IUserService
     {
-        void RegisterUser(User user);
+        int RegisterUser(User user);
         List<User> GetUsers();
     }
 }
