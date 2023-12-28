@@ -16,25 +16,35 @@ namespace SplitWiseAPI.Controllers
         }
         [HttpGet]
         [Route("GetUsers")]
-        public List<User> GetUsers()
+        public List<User> GetAllUsers()
         {
-            return _userService.GetUsers();
+            return _userService.GetAllUsers();
         }
         [HttpPost]
         [Route("RegisterUser")]
-        public string RegisterUser(User user)
+        public User RegisterUser(User user)
         {
           int rowsEffected=  _userService.RegisterUser(user);
             if (rowsEffected > 0)
             {
-                return "User Registered";
+                return user;
 
             }
             else
             {
-                return "User not Inserted";
+                return new User();
             }
 
+        }
+        [HttpGet]
+        [Route("Login")]
+        public bool Login(string username, string password)
+        {
+            var user=_userService.IdentifyUser(username, password);
+            if(user != null) {
+                return true;
+            }
+            else { return false; }
         }
     }
 }

@@ -1,9 +1,10 @@
 {
   "version": 2,
-  "dgSpecHash": "o/ve0S13zpR403QHxCXTUIEbjUuREkTsEzLugKkqFpGPefHx2BAPDoBmjr7WUusuyvxomFXVy79BASmtEiLZOw==",
+  "dgSpecHash": "vcofkJL7cth0D/DW7/m3zTMRLreZeZC/H6fXFDTd+d/cehdHOc7BehnDInIw30heh9eRhxqXjZ97JrIGpgT9Xw==",
   "success": true,
   "projectFilePath": "D:\\MyProjects\\SplitWise\\SplitWise\\SplitWise\\SplitWise.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\zafar.iqubal\\.nuget\\packages\\bootstrap\\5.3.2\\bootstrap.5.3.2.nupkg.sha512",
     "C:\\Users\\zafar.iqubal\\.nuget\\packages\\humanizer\\2.14.1\\humanizer.2.14.1.nupkg.sha512",
     "C:\\Users\\zafar.iqubal\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
     "C:\\Users\\zafar.iqubal\\.nuget\\packages\\humanizer.core.af\\2.14.1\\humanizer.core.af.2.14.1.nupkg.sha512",

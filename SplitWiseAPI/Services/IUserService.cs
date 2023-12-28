@@ -5,6 +5,8 @@ namespace SplitWiseAPI.Services
     public interface IUserService
     {
         int RegisterUser(User user);
-        List<User> GetUsers();
+        List<User> GetAllUsers();
+        User GetUserById(string email);
+        User IdentifyUser(string email, string password);
     }
 }

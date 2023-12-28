@@ -1,0 +1,63 @@
+﻿@model SplitWise.Models.Login
+@{
+    Layout = null;
+    var loginStatus = TempData["Navbar"];
+    ViewData["Navbar"] = loginStatus;
+}
+
+<link href="~/lib/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" />
+<link href="~/lib/bootstrap/dist/css/bootstrap.rtl.min.css" rel="stylesheet" />
+<link href="~/lib/bootstrap/dist/css/bootstrap.rtl.css" rel="stylesheet" />
+<link href="~/lib/bootstrap/dist/css/bootstrap.css" rel="stylesheet" />
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script>
+
+    $(document).ready(function () {
+        var d = '@ViewData["Navbar"]';
+        if (d == "false") {
+            alert("Login Failed ! Email Password not matched");
+        }
+    });
+
+</script>
+
+<h4>Login</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Login">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Password" class="control-label"></label>
+                <input asp-for="Password" class="form-control" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <div style="display:flex;">
+            <div class="form-group buttons">
+                <input type="submit" value="SignIn" class="btn btn-primary" />
+            </div>
+            <div class="buttons">
+                   <a asp-action="Register" class="btn btn-primary">Register</a>
+            
+            </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+<style>
+    .buttons{
+        margin:10px;
+    }
+</style>

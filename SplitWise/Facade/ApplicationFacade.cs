@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using SplitWise.Models;
 using Newtonsoft.Json;
+using System.Net.Http.Json;
+using System.Text;
 
 namespace SplitWise.Facade
 {
@@ -28,6 +30,22 @@ namespace SplitWise.Facade
                 users = new List<User>();
             }
             return users;
+        }
+        public async Task<User> RegisterUser(User user)
+        {
+            string url = "https://localhost:7154/api/Split/RegisterUser";
+            var UserDetails=JsonConvert.SerializeObject(user);
+            var content = new StringContent(UserDetails, Encoding.UTF8, "application/json");
+            HttpResponseMessage response = await _httpClient.PostAsync(url,content);
+            if (response.IsSuccessStatusCode)
+            {
+                return user;
+            }
+            else
+            {
+                user=new User();
+            }
+            return user;
         }
     }
 }

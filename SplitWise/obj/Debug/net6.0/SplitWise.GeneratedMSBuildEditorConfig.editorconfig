@@ -20,8 +20,16 @@ build_property._RazorSourceGeneratorDebug =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
+[D:/MyProjects/SplitWise/SplitWise/SplitWise/Views/Home/Login.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxMb2dpbi5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
 [D:/MyProjects/SplitWise/SplitWise/SplitWise/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/MyProjects/SplitWise/SplitWise/SplitWise/Views/Home/Register.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxSZWdpc3Rlci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/MyProjects/SplitWise/SplitWise/SplitWise/Views/Shared/Error.cshtml]
@@ -38,10 +46,6 @@ build_metadata.AdditionalFiles.CssScope =
 
 [D:/MyProjects/SplitWise/SplitWise/SplitWise/Views/SplitWise/GetAllUsers.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3BsaXRXaXNlXEdldEFsbFVzZXJzLmNzaHRtbA==
-build_metadata.AdditionalFiles.CssScope = 
-
-[D:/MyProjects/SplitWise/SplitWise/SplitWise/Views/SplitWise/RegisterUser.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU3BsaXRXaXNlXFJlZ2lzdGVyVXNlci5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/MyProjects/SplitWise/SplitWise/SplitWise/Views/SplitWise/Split.cshtml]
