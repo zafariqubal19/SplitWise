@@ -1,12 +1,13 @@
 ﻿using SplitWiseAPI.Models;
 
-namespace SplitWiseAPI.Services
+namespace SplitWiseAPI.Services.Interface
 {
     public interface IUserService
     {
         int RegisterUser(User user);
         List<User> GetAllUsers();
-        User GetUserById(string email);
+        User GetUserById(int UserId);
         User IdentifyUser(string email, string password);
+        User GetUserByEmail(string email);
     }
 }

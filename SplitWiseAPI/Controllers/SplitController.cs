@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SplitWiseAPI.Models;
-using SplitWiseAPI.Services;
+using SplitWiseAPI.Services.Interface;
 
 namespace SplitWiseAPI.Controllers
 {
@@ -10,9 +10,13 @@ namespace SplitWiseAPI.Controllers
     public class SplitController : ControllerBase
     {
         private readonly IUserService _userService;
-        public SplitController( IUserService userService)
+        private readonly IGroupService _groupService;
+        private readonly IMemberService _memberService;
+        public SplitController( IUserService userService,IGroupService groupService,IMemberService memberService)
         {
+            _memberService = memberService;
             _userService = userService;
+            _groupService = groupService;
         }
         [HttpGet]
         [Route("GetUsers")]
@@ -21,30 +25,38 @@ namespace SplitWiseAPI.Controllers
             return _userService.GetAllUsers();
         }
         [HttpPost]
-        [Route("RegisterUser")]
-        public User RegisterUser(User user)
+        [Route("CreateGroup")]
+        public string CreateGroup(Group group)
         {
-          int rowsEffected=  _userService.RegisterUser(user);
-            if (rowsEffected > 0)
+                int effectedRows = _groupService.CreateGroup(group);
+                if(effectedRows > 0)
+                {
+                    return "Group Created";
+                }
+                else
+                {
+                    return "Group Creation Failed";
+                }
+
+
+        }
+        [HttpPost]
+        [Route("AddMembers")]
+        public string AddMembers(int groupdId,string email)
+        {
+            int effectedRows=_memberService.AddMembers(groupdId,email);
+            if(effectedRows > 0)
             {
-                return user;
+                return "Member added";
 
             }
             else
             {
-                return new User();
+                return "Member Addition fail";
             }
-
         }
-        [HttpGet]
-        [Route("Login")]
-        public bool Login(string username, string password)
-        {
-            var user=_userService.IdentifyUser(username, password);
-            if(user != null) {
-                return true;
-            }
-            else { return false; }
-        }
+            
+        
+      
     }
 }
