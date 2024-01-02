@@ -22,15 +22,19 @@ namespace SplitWiseAPI.Services.Implementations
         public int AddMembers(int groupId,string email)
         {
             User user=_userService.GetUserByEmail(email);
-            string sp = "sp_AddMembers";
-            SqlCommand sqlCommand = new SqlCommand(sp, _sqlConnection);
-            sqlCommand.CommandType = CommandType.StoredProcedure;
-            sqlCommand.Parameters.AddWithValue("@GroupId", groupId);
-            sqlCommand.Parameters.AddWithValue("@UserId", user.UserId);
-            _sqlConnection.Open();
-            int effectedRows= sqlCommand.ExecuteNonQuery();
-            _sqlConnection.Close();
-            return effectedRows;
+            if(user.Email!=null) {
+                string sp = "sp_AddMembers";
+                SqlCommand sqlCommand = new SqlCommand(sp, _sqlConnection);
+                sqlCommand.CommandType = CommandType.StoredProcedure;
+                sqlCommand.Parameters.AddWithValue("@GroupId", groupId);
+                sqlCommand.Parameters.AddWithValue("@UserId", user.UserId);
+                _sqlConnection.Open();
+                int effectedRows = sqlCommand.ExecuteNonQuery();
+                _sqlConnection.Close();
+                return effectedRows;
+            }
+            else { return 0; }
+           
         }
     }
 }

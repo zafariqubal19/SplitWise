@@ -42,18 +42,22 @@ namespace SplitWiseAPI.Controllers
         }
         [HttpPost]
         [Route("AddMembers")]
-        public string AddMembers(int groupdId,string email)
+        public int AddMembers(int groupdId,string email)
         {
-            int effectedRows=_memberService.AddMembers(groupdId,email);
-            if(effectedRows > 0)
-            {
-                return "Member added";
+            return _memberService.AddMembers(groupdId,email);
 
-            }
-            else
-            {
-                return "Member Addition fail";
-            }
+        }
+        [HttpGet]
+        [Route("GetGroupDetails")]
+        public GroupDetails GetGroupDetails(int groupdId)
+        {
+            return _groupService.GetGroupDetails(groupdId);
+        }
+        [HttpGet]
+        [Route("GetUsersGroups")]
+        public MembersGroups GetUsersGroups(int groupdId) {
+        return _groupService.GetMembersGroup(groupdId);
+
         }
             
         

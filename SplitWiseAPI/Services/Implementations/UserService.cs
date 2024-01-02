@@ -105,8 +105,13 @@ namespace SplitWiseAPI.Services.Implementations
                     user.PhoneNumber = Convert.ToString(reader["PhoneNumber"]);
                     user.Password = Convert.ToString(reader["Password"]);
                 }
+                return user;
             }
-            return user;
+            else
+            {
+                return new User();
+            }
+           
         }
         public User IdentifyUser(string email, string password)
         {
