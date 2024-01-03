@@ -127,6 +127,7 @@ namespace SplitWiseAPI.Services.Implementations
             {
                 while (reader.Read())
                 {
+                    user.UserId= Convert.ToInt32(reader["UserId"]);
                     user.Email = Convert.ToString(reader["Email"]);
                     user.Name = Convert.ToString(reader["Name"]);
                     user.PhoneNumber = Convert.ToString(reader["PhoneNumber"]);

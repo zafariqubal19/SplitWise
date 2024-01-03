@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SplitWiseAPI.Models;
+using SplitWiseAPI.Models.RequestParameters;
 using SplitWiseAPI.Services.Interface;
 
 namespace SplitWiseAPI.Controllers
@@ -26,25 +27,39 @@ namespace SplitWiseAPI.Controllers
         }
         [HttpPost]
         [Route("CreateGroup")]
-        public string CreateGroup(Group group)
+        public int CreateGroup(GroupCreation group)
         {
-                int effectedRows = _groupService.CreateGroup(group);
-                if(effectedRows > 0)
+            Group created = _groupService.GetCreatedGroup(group.UserId, group.GroupName);
+            if(created.GroupId == 0)
+            {
+                int effectRows = _groupService.CreateGroup(group.GroupName, group.UserId);
+                if(effectRows > 0) 
                 {
-                    return "Group Created";
+                   Group groups= _groupService.GetCreatedGroup(group.UserId, group.GroupName);
+                    int effected=_memberService.AddMembers(groups.UserId, groups.CreatorEmail);
+                    return effectRows;
+
                 }
                 else
                 {
-                    return "Group Creation Failed";
+                    return 0;
                 }
+            }
+            else
+            {
+                return 409;
+            }
+                
+          
+                
 
 
         }
         [HttpPost]
         [Route("AddMembers")]
-        public int AddMembers(int groupdId,string email)
+        public int AddMembers(AddMembersModel model)
         {
-            return _memberService.AddMembers(groupdId,email);
+            return _memberService.AddMembers(model.GroupId,model.Email);
 
         }
         [HttpGet]
@@ -55,9 +70,8 @@ namespace SplitWiseAPI.Controllers
         }
         [HttpGet]
         [Route("GetUsersGroups")]
-        public MembersGroups GetUsersGroups(int groupdId) {
-        return _groupService.GetMembersGroup(groupdId);
-
+        public MembersGroups GetUsersGroups(int UserId) {
+        return _groupService.GetMembersGroup(UserId);
         }
             
         

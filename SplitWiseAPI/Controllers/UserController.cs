@@ -32,14 +32,10 @@ namespace SplitWiseAPI.Controllers
         }
         [HttpGet]
         [Route("Login")]
-        public bool Login(string username, string password)
+        public User Login(string username, string password)
         {
-            var user = _userService.IdentifyUser(username, password);
-            if (user != null)
-            {
-                return true;
-            }
-            else { return false; }
+           return _userService.IdentifyUser(username, password);
+           
         }
     }
 }
