@@ -8,5 +8,6 @@ namespace SplitWiseAPI.Services.Interface
         GroupDetails GetGroupDetails(int groupId);
         MembersGroups GetMembersGroup(int UserId);
         Group GetCreatedGroup(int UserId, string groupName);
+        int DeletGroup(int groupId);
     }
 }

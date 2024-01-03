@@ -125,5 +125,20 @@ namespace SplitWiseAPI.Services.Implementations
             return createdGroup;
 
         }
+        public int DeletGroup(int groupId)
+        {
+            string sp = "sp_DeleteGroup";
+            int effectedRows;
+            using (SqlCommand sqlCommand= new SqlCommand( sp, _sqlConnection))
+            {
+                sqlCommand.CommandType = CommandType.StoredProcedure;
+                sqlCommand.Parameters.AddWithValue("@GroupId", groupId);
+                _sqlConnection.Open();
+                 effectedRows = sqlCommand.ExecuteNonQuery();
+                _sqlConnection.Close();
+
+            }
+            return effectedRows;
+        }
     }
 }

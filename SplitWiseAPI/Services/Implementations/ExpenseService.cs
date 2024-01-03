@@ -30,6 +30,46 @@ namespace SplitWiseAPI.Services.Implementations
                 return deffectedRows;
             }
         }
+        public IEnumerable<Expense> GetExpenses(int GroupId)
+        {
+            string sp = "sp_GetAllExpenses";
+            List<Expense> expenses = new List<Expense>();
+            using (SqlCommand cmd = new SqlCommand(sp, _connection))
+            {
+                
+                cmd.CommandType= CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@GroupId", GroupId);
+                _connection.Open();
+                SqlDataReader reader= cmd.ExecuteReader();
+              if(reader.HasRows)
+                {
+                    while(reader.Read())
+                    {
+                        Expense expense = new Expense();
+                        expense.ExpenseId = Convert.ToInt32(reader["ExpenseId"]);
+                        expense.GroupId = Convert.ToInt32(reader["GroupId"]);
+                        expense.UserId = Convert.ToInt32(reader["UserId"]);
+                        expense.Spender = Convert.ToString(reader["Spender"]);
+                        expense.Description = Convert.ToString(reader["Description"]);
+                        expense.TotalAmount = Convert.ToInt32(reader["TotalAmount"]);
+                        expenses.Add(expense);
+                    }
+                }
+            }
+            return expenses;
+        }
+        public int DeleteExpenses(int ExpenseId)
+        {
+            string sp = "sp_DeleteExpenses";
+            using(SqlCommand cmd = new SqlCommand(sp,_connection))
+            {
+                cmd.CommandType=CommandType.StoredProcedure;
+                cmd.Parameters.AddWithValue("@ExpenseId", ExpenseId);
+                _connection.Open();
+               int effectedRows= cmd.ExecuteNonQuery();
+                return effectedRows;
+            }
+        }
    
     }
 }

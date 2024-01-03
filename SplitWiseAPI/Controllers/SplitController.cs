@@ -36,7 +36,7 @@ namespace SplitWiseAPI.Controllers
                 if(effectRows > 0) 
                 {
                    Group groups= _groupService.GetCreatedGroup(group.UserId, group.GroupName);
-                    int effected=_memberService.AddMembers(groups.UserId, groups.CreatorEmail);
+                    int effected=_memberService.AddMembers(groups.GroupId, groups.CreatorEmail);
                     return effectRows;
 
                 }
@@ -72,6 +72,22 @@ namespace SplitWiseAPI.Controllers
         [Route("GetUsersGroups")]
         public MembersGroups GetUsersGroups(int UserId) {
         return _groupService.GetMembersGroup(UserId);
+        }
+        [HttpDelete]
+        [Route("DeleteGroup")]
+        public int DeleteGroup(int groupId)
+        { 
+        GroupDetails groupDetails=_groupService.GetGroupDetails(groupId);
+            foreach(var item in groupDetails.Members)
+            {
+                _memberService.DeleteMembers(groupId, item.UserId);
+            }
+            return _groupService.DeletGroup(groupId);
+        }
+        [HttpDelete]
+        [Route("DeleteMember")]
+        public int DeleteMembers(int groupId,int userId) {
+        return _memberService.DeleteMembers(groupId, userId);
         }
             
         

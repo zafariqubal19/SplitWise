@@ -36,5 +36,21 @@ namespace SplitWiseAPI.Services.Implementations
             else { return 0; }
            
         }
+        public int DeleteMembers(int groupId,int userId) 
+        {
+            string sp = "sp_DeleteMembers";
+            int effrctRows;
+            using (SqlCommand sqlCommand = new SqlCommand( sp, _sqlConnection))
+            {
+                sqlCommand.CommandType = CommandType.StoredProcedure;
+                sqlCommand.Parameters.AddWithValue("@GroupId", groupId);
+                sqlCommand.Parameters.AddWithValue("@UserId", userId);
+                _sqlConnection.Open();
+                 effrctRows = sqlCommand.ExecuteNonQuery();
+                _sqlConnection.Close();
+                
+            }
+            return effrctRows;
+        }
     }
 }

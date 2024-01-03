@@ -20,5 +20,18 @@ namespace SplitWiseAPI.Controllers
         {
             return _expenseService.AddExpenses(expense);
         }
+        [HttpGet]
+        [Route("GetAllExpenses")]
+        public IEnumerable<Expense> GetExpenses(int GroupId)
+        {
+            return _expenseService.GetExpenses(GroupId);
+        }
+        [HttpDelete]
+        [Route("DeleteExpenses")]
+        public int DeleteExpenses(int ExpenseId)
+        {
+            return _expenseService.DeleteExpenses(ExpenseId);
+        }
+       
     }
 }
