@@ -34,8 +34,7 @@ namespace SplitWiseAPI.Controllers
         [Route("Login")]
         public User Login(string username, string password)
         {
-           return _userService.IdentifyUser(username, password);
-           
+           return _userService.IsValidUser(username, password);
         }
     }
 }

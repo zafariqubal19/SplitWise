@@ -68,6 +68,7 @@ namespace SplitWiseAPI.Services.Implementations
                 }
             }
             groupDetails.Members = members;
+            _sqlConnection.Close();
          return groupDetails;
         
         }
@@ -91,6 +92,8 @@ namespace SplitWiseAPI.Services.Implementations
                     membersGroups.UserId = Convert.ToInt32(reader["UserId"]);
                     group.GroupName = Convert.ToString(reader["GroupName"]);
                     group.GroupId = Convert.ToInt32(reader["GroupId"]);
+                    group.CreatorId = Convert.ToInt32(reader["CreatorId"]);
+
                     groupName.Add(group);
                     
                     

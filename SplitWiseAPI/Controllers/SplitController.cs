@@ -13,7 +13,7 @@ namespace SplitWiseAPI.Controllers
         private readonly IUserService _userService;
         private readonly IGroupService _groupService;
         private readonly IMemberService _memberService;
-        public SplitController( IUserService userService,IGroupService groupService,IMemberService memberService)
+        public SplitController(IUserService userService, IGroupService groupService, IMemberService memberService)
         {
             _memberService = memberService;
             _userService = userService;
@@ -30,13 +30,13 @@ namespace SplitWiseAPI.Controllers
         public int CreateGroup(GroupCreation group)
         {
             Group created = _groupService.GetCreatedGroup(group.UserId, group.GroupName);
-            if(created.GroupId == 0)
+            if (created.GroupId == 0)
             {
                 int effectRows = _groupService.CreateGroup(group.GroupName, group.UserId);
-                if(effectRows > 0) 
+                if (effectRows > 0)
                 {
-                   Group groups= _groupService.GetCreatedGroup(group.UserId, group.GroupName);
-                    int effected=_memberService.AddMembers(groups.GroupId, groups.CreatorEmail);
+                    Group groups = _groupService.GetCreatedGroup(group.UserId, group.GroupName);
+                    int effected = _memberService.AddMembers(groups.GroupId, groups.CreatorEmail);
                     return effectRows;
 
                 }
@@ -49,17 +49,12 @@ namespace SplitWiseAPI.Controllers
             {
                 return 409;
             }
-                
-          
-                
-
-
         }
         [HttpPost]
         [Route("AddMembers")]
         public int AddMembers(AddMembersModel model)
         {
-            return _memberService.AddMembers(model.GroupId,model.Email);
+            return _memberService.AddMembers(model.GroupId, model.Email);
 
         }
         [HttpGet]
@@ -70,15 +65,16 @@ namespace SplitWiseAPI.Controllers
         }
         [HttpGet]
         [Route("GetUsersGroups")]
-        public MembersGroups GetUsersGroups(int UserId) {
-        return _groupService.GetMembersGroup(UserId);
+        public MembersGroups GetUsersGroups(int UserId)
+        {
+            return _groupService.GetMembersGroup(UserId);
         }
         [HttpDelete]
         [Route("DeleteGroup")]
         public int DeleteGroup(int groupId)
-        { 
-        GroupDetails groupDetails=_groupService.GetGroupDetails(groupId);
-            foreach(var item in groupDetails.Members)
+        {
+            GroupDetails groupDetails = _groupService.GetGroupDetails(groupId);
+            foreach (var item in groupDetails.Members)
             {
                 _memberService.DeleteMembers(groupId, item.UserId);
             }
@@ -86,11 +82,13 @@ namespace SplitWiseAPI.Controllers
         }
         [HttpDelete]
         [Route("DeleteMember")]
-        public int DeleteMembers(int groupId,int userId) {
-        return _memberService.DeleteMembers(groupId, userId);
+        public int DeleteMembers(int groupId, int userId)
+        {
+            return _memberService.DeleteMembers(groupId, userId);
         }
-            
         
-      
+
+
+
     }
 }

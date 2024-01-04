@@ -10,6 +10,7 @@
     {
         public string GroupName { get; set; }
         public int GroupId { get; set; }
+        public int CreatorId { get; set; }
 
     }
 }

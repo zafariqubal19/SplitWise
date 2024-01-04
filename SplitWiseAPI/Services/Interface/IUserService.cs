@@ -7,7 +7,7 @@ namespace SplitWiseAPI.Services.Interface
         int RegisterUser(User user);
         List<User> GetAllUsers();
         User GetUserById(int UserId);
-        User IdentifyUser(string email, string password);
+        User IsValidUser(string email, string password);
         User GetUserByEmail(string email);
     }
 }

@@ -52,5 +52,20 @@ namespace SplitWiseAPI.Services.Implementations
             }
             return effrctRows;
         }
+        public int UpdateMembersAmount(Members members)
+        {
+            string sp = "sp_splitAmount";
+            SqlCommand sqlCommand=new SqlCommand( sp, _sqlConnection);
+            sqlCommand.CommandType= CommandType.StoredProcedure;
+            sqlCommand.Parameters.AddWithValue("@GroupId", members.GroupId);
+            sqlCommand.Parameters.AddWithValue("@UserId", members.UserId);
+            sqlCommand.Parameters.AddWithValue("@TotalAmountToGive", members.TotalAmountToGive);
+            sqlCommand.Parameters.AddWithValue("@TotalAmountToReceive", members.TotalAmountToReceive);
+            sqlCommand.Parameters.AddWithValue("@TotalAmountSpent", members.TotalAmountSpent);
+            _sqlConnection.Open();
+            int effectedRows= sqlCommand.ExecuteNonQuery();
+            _sqlConnection.Close();
+            return effectedRows;
+        }
     }
 }

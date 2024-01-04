@@ -19,8 +19,8 @@ namespace SplitWiseAPI.Services.Implementations
         }
         public int RegisterUser(User user)
         {
-            User users = GetUserById(user.UserId);
-            if (users == null)
+            User users = GetUserByEmail(user.Email);
+            if (users.Email == null)
             {
                 string sp = "sp_InsertSplitwiseUser";
                 SqlCommand sqlCommand = new SqlCommand(sp, _sqlConnection);
@@ -62,6 +62,7 @@ namespace SplitWiseAPI.Services.Implementations
 
                 }
             }
+            _sqlConnection.Close();
             return users;
         }
         public User GetUserById(int UserId)
@@ -84,6 +85,7 @@ namespace SplitWiseAPI.Services.Implementations
                     user.Password = Convert.ToString(reader["Password"]);
                 }
             }
+            _sqlConnection.Close();
             return user;
         }
         public User GetUserByEmail(string email)
@@ -105,15 +107,13 @@ namespace SplitWiseAPI.Services.Implementations
                     user.PhoneNumber = Convert.ToString(reader["PhoneNumber"]);
                     user.Password = Convert.ToString(reader["Password"]);
                 }
-                return user;
+                
             }
-            else
-            {
-                return new User();
-            }
-           
+            _sqlConnection.Close();
+            return user;
+
         }
-        public User IdentifyUser(string email, string password)
+        public User IsValidUser(string email, string password)
         {
             User user = new User();
             string sp = "IdentifyUser";
@@ -134,6 +134,7 @@ namespace SplitWiseAPI.Services.Implementations
                     user.Password = Convert.ToString(reader["Password"]);
                 }
             }
+            _sqlConnection.Close();
             return user;
 
 
