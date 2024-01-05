@@ -59,19 +59,22 @@ namespace SplitWiseAPI.Controllers
                         if (item.TotalAmountToGive > (expense.TotalAmount - splitAmount))
                         {
                             members.TotalAmountToGive=item.TotalAmountToGive-(expense.TotalAmount - splitAmount);
+                            members.TotalAmountToReceive = 0;
+
                             
                         }
                         else
                         {
-
+                            members.TotalAmountToReceive=(expense.TotalAmount - splitAmount)-item.TotalAmountToGive;
+                            members.TotalAmountToGive = 0;
                         }
-                        members.TotalAmountToReceive= (expense.TotalAmount-splitAmount)-item.TotalAmountToGive;
-                        members.TotalAmountToGive = 0;
+                    //    members.TotalAmountToReceive= (expense.TotalAmount-splitAmount)-item.TotalAmountToGive;
+                      //  members.TotalAmountToGive = 0;
                     }
                     else 
                     {
-                        members.TotalAmountToGive= members.TotalAmountToGive-(expense.TotalAmount- splitAmount);
-                        members.TotalAmountToReceive= 0;
+                      members.TotalAmountToReceive=item.TotalAmountToReceive+(expense.TotalAmount - splitAmount);
+                        members.TotalAmountToGive = 0;
                     }
                     //members.TotalAmountToReceive = item.TotalAmountToReceive + expense.TotalAmount - splitAmount-item.TotalAmountToGive;
                     //if(members.TotalAmountToReceive <= 0)
@@ -92,15 +95,23 @@ namespace SplitWiseAPI.Controllers
                 {
                     members.UserId = item.UserId;
                     members.GroupId = expense.GroupId;
-                    if(splitAmount > item.TotalAmountToReceive)
+                   if(item.TotalAmountToReceive>0)
                     {
-                        members.TotalAmountToGive=splitAmount-item.TotalAmountToReceive;
-                        members.TotalAmountToReceive = 0;
+                        if(item.TotalAmountToReceive > (splitAmount))
+                        {
+                            members.TotalAmountToReceive = item.TotalAmountToReceive - splitAmount;
+                            members.TotalAmountToGive = 0;
+                        }
+                        else
+                        {
+                            members.TotalAmountToGive=splitAmount-item.TotalAmountToReceive;
+                            members.TotalAmountToReceive = 0;
+                        }
                     }
                     else
                     {
-                        members.TotalAmountToReceive=item.TotalAmountToReceive-splitAmount;
-                        members.TotalAmountToGive = 0;
+                        members.TotalAmountToGive = item.TotalAmountToGive + splitAmount;
+                        members.TotalAmountToReceive = 0;
                     }
                   //  members.TotalAmountToGive = item.TotalAmountToGive + splitAmount;
                     members.TotalAmountSpent = item.TotalAmountSpent;
@@ -117,6 +128,18 @@ namespace SplitWiseAPI.Controllers
                 }
             }
             return effectedRows;
+        }
+        [HttpGet]
+        [Route("GetAllMyExpenses")]
+        public IEnumerable<Expense> AllMyExpenses(int UserId,int GroupId)
+        {
+            return _expenseService.GetAllMyExpenses(UserId, GroupId);
+        }
+        [HttpPut]
+        [Route("SettleUp")]
+        public int SettleExpenses(int GroupId)
+        {
+            return _expenseService.SettleUp(GroupId);
         }
 
     }

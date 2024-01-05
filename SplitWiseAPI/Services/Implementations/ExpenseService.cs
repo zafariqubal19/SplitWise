@@ -70,6 +70,47 @@ namespace SplitWiseAPI.Services.Implementations
                 return effectedRows;
             }
         }
+        public IEnumerable<Expense> GetAllMyExpenses(int UserId,int GroupId)
+        {
+            //string sp = "SELECT * FROM EXPENSES WHERE UserId=3 AND GroupId=1";
+            string sp = "sp_GetAllMyExpenses";
+            List<Expense> expenses =new  List<Expense>();
+            SqlCommand sqlCommand = new SqlCommand(sp,_connection);
+            sqlCommand.CommandType=CommandType.StoredProcedure;
+           //sqlCommand.CommandText = sp;
+            sqlCommand.Parameters.AddWithValue("@UserId", UserId);
+            sqlCommand.Parameters.AddWithValue("@GroupId", GroupId);
+            _connection.Open ();
+            SqlDataReader reader = sqlCommand.ExecuteReader();
+            if(reader.HasRows)
+            {
+                while(reader.Read())
+                {
+                    Expense expense = new Expense();
+                    expense.ExpenseId = Convert.ToInt32(reader["ExpenseId"]);
+                    expense.UserId = Convert.ToInt32(reader["UserId"]);
+                    expense.GroupId = Convert.ToInt32(reader["GroupId"]);
+                    expense.Description = Convert.ToString(reader["Description"]);
+                    expense.Spender = Convert.ToString(reader["Spender"]);
+                    expense.TotalAmount = Convert.ToInt32(reader["TotalAmount"]);
+                    expenses.Add(expense);
+                }
+            }
+            _connection.Close();
+            return expenses;
+
+        }
+        public int SettleUp(int GroupId)
+        {
+            string sp = "sp_SettleExpenses";
+            SqlCommand sqlCommand= new SqlCommand(sp,_connection);
+            sqlCommand.CommandType= CommandType.StoredProcedure;
+            sqlCommand.Parameters.AddWithValue("@GroupId",GroupId); 
+            _connection.Open();
+             int effectedRows=sqlCommand.ExecuteNonQuery();
+            _connection.Close();
+            return effectedRows;
+        }
    
     }
 }
