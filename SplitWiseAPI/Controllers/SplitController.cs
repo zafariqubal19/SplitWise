@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SplitWiseAPI.Models;
 using SplitWiseAPI.Models.RequestParameters;
@@ -6,8 +8,10 @@ using SplitWiseAPI.Services.Interface;
 
 namespace SplitWiseAPI.Controllers
 {
+    [Authorize(AuthenticationSchemes =JwtBearerDefaults.AuthenticationScheme)]
     [Route("api/[controller]")]
     [ApiController]
+    
     public class SplitController : ControllerBase
     {
         private readonly IUserService _userService;
@@ -21,6 +25,7 @@ namespace SplitWiseAPI.Controllers
         }
         [HttpGet]
         [Route("GetUsers")]
+        [Authorize]
         public List<User> GetAllUsers()
         {
             return _userService.GetAllUsers();
@@ -54,7 +59,36 @@ namespace SplitWiseAPI.Controllers
         [Route("AddMembers")]
         public int AddMembers(AddMembersModel model)
         {
-            return _memberService.AddMembers(model.GroupId, model.Email);
+            User user=_userService.GetUserByEmail(model.Email);
+            int effectedRows=0;
+            if(user.Email != null) 
+            {
+
+               effectedRows=  _memberService.AddMembers(model.GroupId, model.Email);
+            }
+            else
+            {
+                User newuser= new User();
+                newuser.Email = model.Email;
+                newuser.Name = model.Name;
+                newuser.PhoneNumber = "";
+                newuser.Password = "";
+                newuser.IsRegistered = false;
+                
+                
+                int UserInsert=_userService.RegisterUser(newuser);
+                if(UserInsert > 0)
+                {
+                    User newInsertedUser=_userService.GetUserByEmail(newuser.Email);
+                    if(newInsertedUser != null)
+                    {
+                        effectedRows = _memberService.AddMembers(model.GroupId, model.Email);
+                    }
+                }
+
+            }
+            return effectedRows;
+            
 
         }
         [HttpGet]

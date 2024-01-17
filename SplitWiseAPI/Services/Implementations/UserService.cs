@@ -9,13 +9,14 @@ namespace SplitWiseAPI.Services.Implementations
     {
         private readonly SqlConnection _sqlConnection;
         private readonly IConfiguration _configuration;
-        public UserService(IConfiguration configuration)
+        private readonly IEncryptionService _encryptionService;
+        public UserService(IConfiguration configuration, IEncryptionService encryptionService)
         {
 
 
             _configuration = configuration;
             _sqlConnection = new SqlConnection(_configuration.GetConnectionString("SplitWiseDB"));
-
+            _encryptionService = encryptionService;
         }
         public int RegisterUser(User user)
         {
@@ -23,21 +24,42 @@ namespace SplitWiseAPI.Services.Implementations
             if (users.Email == null)
             {
                 string sp = "sp_InsertSplitwiseUser";
+               string salt= _encryptionService.GenerateSalt(user.Password);
+                string hashPassword=_encryptionService.EcncryptPassword(user.Password, salt);
                 SqlCommand sqlCommand = new SqlCommand(sp, _sqlConnection);
                 sqlCommand.CommandType = CommandType.StoredProcedure;
                 sqlCommand.Parameters.AddWithValue("@Name", user.Name);
                 sqlCommand.Parameters.AddWithValue("@Email", user.Email);
                 sqlCommand.Parameters.AddWithValue("@PhoneNumber", user.PhoneNumber);
-                sqlCommand.Parameters.AddWithValue("@Password", user.Password);
+                sqlCommand.Parameters.AddWithValue("@Password", hashPassword);
+                sqlCommand.Parameters.AddWithValue("@IsRegistered", user.IsRegistered);
+                sqlCommand.Parameters.AddWithValue("@Salt", salt);
                 _sqlConnection.Open();
                 int rowsEffected = sqlCommand.ExecuteNonQuery();
                 _sqlConnection.Close();
                 return rowsEffected;
             }
+            else if (users.IsRegistered == false)
+            {
+                string sp = "";
+                SqlCommand sqlCommand = new SqlCommand( sp, _sqlConnection);
+                sqlCommand.CommandType= CommandType.StoredProcedure;
+                sqlCommand.Parameters.AddWithValue("@UserId", users.UserId);
+                sqlCommand.Parameters.AddWithValue("@Name", user.Name);
+                sqlCommand.Parameters.AddWithValue("@PhoneNumber", user.PhoneNumber);
+                sqlCommand.Parameters.AddWithValue("@Password", user.Password);
+                sqlCommand.Parameters.AddWithValue("@IsRegistered", true) ;
+                _sqlConnection.Open ();
+                int effectedRows= sqlCommand.ExecuteNonQuery();
+                _sqlConnection.Close();
+                return effectedRows;
+            }
             else
             {
                 return 0;
             }
+
+          
 
         }
         public List<User> GetAllUsers()
@@ -106,6 +128,7 @@ namespace SplitWiseAPI.Services.Implementations
                     user.Name = Convert.ToString(reader["Name"]);
                     user.PhoneNumber = Convert.ToString(reader["PhoneNumber"]);
                     user.Password = Convert.ToString(reader["Password"]);
+                    user.Salt = Convert.ToString(reader["Salt"]);
                 }
                 
             }

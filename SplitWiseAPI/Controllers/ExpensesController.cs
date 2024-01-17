@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SplitWiseAPI.Models;
 using SplitWiseAPI.Services.Implementations;
@@ -6,6 +8,7 @@ using SplitWiseAPI.Services.Interface;
 
 namespace SplitWiseAPI.Controllers
 {
+    [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
     [Route("api/[controller]")]
     [ApiController]
     public class ExpensesController : ControllerBase
